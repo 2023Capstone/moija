@@ -8,7 +8,8 @@ https://developer.android.com/studio
 ```
 https://github.com/2023Capstone/hashkey
 파일 다운로드 -> 실행 -> 아래 Logcat선택 ->필터 옆에 getKeyHash 검색
-![image](https://github.com/2023Capstone/moija/assets/123153695/333a6e25-c6be-403b-b55e-4c175f251b84)
+![image](https://github.com/2023Capstone/moija/assets/123153695/de459841-d8f8-4505-b1a4-4a83b1d49721)
+
 
 ```
 

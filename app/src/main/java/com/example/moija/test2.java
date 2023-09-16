@@ -40,7 +40,7 @@ public class test2 extends AppCompatActivity {
 
                 myRef.setValue(writeEdit.getText().toString());
 
-                // 읽기
+                // 읽기 eventListener 데이터베이스의 값이 바뀌면 자동으로 변경됨
                 myRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -50,6 +50,14 @@ public class test2 extends AppCompatActivity {
                         readText.setText("value: " + value);
                     }
 
+                    //   함수를 실행시켜야 읽어줌
+                    //    @Override
+                    //    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    //        // 데이터를 한 번 읽음
+                    //        String value = dataSnapshot.getValue(String.class);
+                    //        // 데이터 처리
+                    //        textView.setText(value);
+                    //    }
                     @Override
                     public void onCancelled(DatabaseError error) {
                         // Failed to read value

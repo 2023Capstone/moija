@@ -38,13 +38,16 @@ public class LoginActivity extends AppCompatActivity {
         nickName = findViewById(R.id.nickname);
         profileImage = findViewById(R.id.profile);
         btn_1 = findViewById(R.id.btn_1);
+
+
+
+
         // 카카오가 설치되어 있는지 확인 하는 메서드또한 카카오에서 제공 콜백 객체를 이용함
         Function2<OAuthToken, Throwable, Unit> callback = new  Function2<OAuthToken, Throwable, Unit>() {
             @Override
             public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
                 // 이때 토큰이 전달이 되면 로그인이 성공한 것이고 토큰이 전달되지 않았다면 로그인 실패
                 if(oAuthToken != null) {
-
                 }
                 if (throwable != null) {
 
@@ -53,6 +56,8 @@ public class LoginActivity extends AppCompatActivity {
                 return null;
             }
         };
+
+
         //firebase 버튼
 
         btn_1.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +96,7 @@ public class LoginActivity extends AppCompatActivity {
         });
         updateKakaoLoginUi();
     }
+
     private  void updateKakaoLoginUi(){
         UserApiClient.getInstance().me(new Function2<User, Throwable, Unit>() {
             @Override
@@ -98,8 +104,8 @@ public class LoginActivity extends AppCompatActivity {
                 // 로그인이 되어있으면
                 if (user!=null){
 
-                    // 유저의 아이디
-                    Log.d(TAG,"invoke: id" + user.getId());
+                    // 유저의 아이디D
+                    Log.d(TAG,"invoke: id" +user.getId());
                     // 유저의 어카운트정보에 이메일
                     Log.d(TAG,"invoke: nickname" + user.getKakaoAccount().getEmail());
                     // 유저의 어카운트 정보의 프로파일에 닉네임
@@ -123,5 +129,7 @@ public class LoginActivity extends AppCompatActivity {
                 return null;
             }
         });
+
+
     }
 }

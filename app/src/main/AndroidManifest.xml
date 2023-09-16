@@ -16,10 +16,10 @@
         android:theme="@style/Theme.Moija"
         tools:targetApi="31">
         <activity
-            android:name=".test2"
+            android:name=".chatList"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".test2"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"

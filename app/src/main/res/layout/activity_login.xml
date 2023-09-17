@@ -27,16 +27,22 @@
             android:layout_height="wrap_content"/>
 
         <Button
-            android:id="@+id/btn_1"
+            android:id="@+id/send_img"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:text="프로필 이미지 서버로 보내기 firebase" />
 
         <Button
             android:id="@+id/logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="로그아웃" />
+
+        <Button
+            android:id="@+id/btn_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="firebase realtime database 연동" />
 
     </LinearLayout>
 

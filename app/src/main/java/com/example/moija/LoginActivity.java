@@ -3,6 +3,7 @@ package com.example.moija;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,9 +13,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.kakao.sdk.auth.model.OAuthToken;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.User;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.io.File;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
@@ -26,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView nickName;
     private ImageView profileImage;
 
-    private Button btn_1;
+    private Button btn_1,send_img;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         nickName = findViewById(R.id.nickname);
         profileImage = findViewById(R.id.profile);
         btn_1 = findViewById(R.id.btn_1);
-
+        send_img = findViewById(R.id.send_img);
 
 
 
@@ -57,6 +67,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
 
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+
+        send_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         //firebase 버튼
 
@@ -110,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d(TAG,"invoke: nickname" + user.getKakaoAccount().getEmail());
                     // 유저의 어카운트 정보의 프로파일에 닉네임
                     Log.d(TAG,"invoke: email" + user.getKakaoAccount().getProfile().getNickname());
-
+                    Log.d(TAG,"invoke: email" + user.getKakaoAccount().getProfile());
                     nickName.setText(user.getKakaoAccount().getProfile().getNickname());
 
                     Glide.with(profileImage).load(user.getKakaoAccount().

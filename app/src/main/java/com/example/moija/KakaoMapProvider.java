@@ -6,9 +6,6 @@ import com.kakao.vectormap.route.RouteLineLayer;
 public class KakaoMapProvider implements MapProvider {
     private KakaoMap kakaoMap;
 
-    public KakaoMap getKakaoMap(){
-        return this.kakaoMap;
-    }
     public KakaoMapProvider(KakaoMap kakaoMap) {
         this.kakaoMap = kakaoMap;
     }

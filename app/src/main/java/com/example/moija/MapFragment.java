@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
+import com.kakao.vectormap.MapView;
+
 public class MapFragment extends Fragment {
 
     public MapFragment() {

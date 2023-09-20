@@ -34,8 +34,9 @@ public class Fragment_Chat_Map extends AppCompatActivity {
         // ChatFragment와 MapFragment 인스턴스 초기화
         chatFragment = new ChatFragment();
         mapFragment = new MapFragment();
-        fragmentManager.beginTransaction().replace(R.id.fragmentContainer,chatFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.fragmentContainer,mapFragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, chatFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.fragmentContainer, mapFragment).commit();
+
         //만약 검색창에서 결과를 클릭하고넘어온 경우에는 경로를 그려줘야함
         // SearchPage에서 보낸 인텐트를 받아서 key가 있는지 확인함 (SearchPage 참조)
         Intent intent=getIntent();
@@ -44,8 +45,11 @@ public class Fragment_Chat_Map extends AppCompatActivity {
             String message = intent.getStringExtra("key");
             if (message != null) {
                 //길찾기 메서드
-                mapFragment.FindGoal();
                 fragmentManager.beginTransaction().show(mapFragment).commit();
+                Bundle bundle = new Bundle();
+                bundle.putString("key", "FindGoal");
+                mapFragment.setArguments(bundle);
+
 
 
             }

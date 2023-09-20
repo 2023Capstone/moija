@@ -51,9 +51,8 @@ import retrofit2.http.Header;
 import retrofit2.http.Query;
 
 public class MapFragment extends Fragment {
-    //상태를 보존할 변수
-    private Bundle savedState;
 
+    KakaoMap thiskakaoMap;
     public static Context context;
     public boolean searchingwithMine=false;
     KakaoMobilityclasses.Root directionResponse;
@@ -67,7 +66,6 @@ public class MapFragment extends Fragment {
     //길 그려주는 RouteDrawer 클래스 선언
     RouteDrawer routeDrawer;
     //카카오맵 클래스 선언(사용하고 있는 카카오맵을 담기 위함)
-    static KakaoMap thiskakaoMap;
     //API 키
     protected static final String API_KEY = "8661fab6b43b9d4005d9eb9a06b10449";
     //api 기본 URL
@@ -113,13 +111,6 @@ public class MapFragment extends Fragment {
         context=requireContext();
         MapView mapView = rootview.findViewById(R.id.map_view);
         FloatingActionButton searchbtn=rootview.findViewById(R.id.searchbtn);
-
-        //Retrofit을 이용해 api 데이터를 json 형태로 받고 해석
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
         mapView.start(new MapLifeCycleCallback() {
             @Override
             public void onMapDestroy() {
@@ -134,9 +125,13 @@ public class MapFragment extends Fragment {
             @Override
             //지도 API가 준비되었을때
             public void onMapReady(KakaoMap kakaoMap) {
+
                 mapProvider = new KakaoMapProvider(kakaoMap);
                 routeDrawer=new RouteDrawer(mapProvider);
+
                 thiskakaoMap=kakaoMap;
+
+
                 if(Mylocation.Lastlocation!=null) {
                     //마커 스타일 설정
                     LabelStyles styles = kakaoMap.getLabelManager()
@@ -203,6 +198,14 @@ public class MapFragment extends Fragment {
                     }
 
                 };
+                Bundle args = getArguments();
+                if (args != null) {
+                    String value = args.getString("key");
+                    if(value!=null)
+                    {
+                        FindGoal();
+                    }
+                }
 
                 //현재위치에 마커를 찍는 코드
 
@@ -243,29 +246,34 @@ public class MapFragment extends Fragment {
     public void FindGoal(){
                 //경로를 그리는 메서드 호출
                 GetRoute();
+                if(thiskakaoMap!=null)
+                {
+                    LabelLayer layer = thiskakaoMap.getLabelManager().getLayer();
+                    if (startLabel != null) {
+                        layer.remove(startLabel);
+                    }
+                    if (goalLabel != null) {
+                        layer.remove(goalLabel);
+                    }
+                    LabelStyles startstyles = thiskakaoMap.getLabelManager()
+                            .addLabelStyles(LabelStyles.from(LabelStyle.from(R.drawable.goalmarker).setTextStyles(20, Color.BLACK).setApplyDpScale(false)));
+
+                    LabelOptions startoptions = LabelOptions.from(LatLng.from(Mylocation.StartPlace.getY(), Mylocation.StartPlace.getX())).setTexts("출발").setStyles(startstyles);
+                    startLabel = layer.addLabel(startoptions);
+                    startLabel.scaleTo(0.15f, 0.15f);
+                    Log.d("MapFragment","라벨 그렸어요");
+                    LabelStyles styles = thiskakaoMap.getLabelManager()
+                            .addLabelStyles(LabelStyles.from(LabelStyle.from(R.drawable.goalmarker).setTextStyles(20, Color.BLACK).setApplyDpScale(false)));
+                    LabelOptions options = LabelOptions.from(LatLng.from(Mylocation.selectedPlace.getY(), Mylocation.selectedPlace.getX())).setTexts("도착").setStyles(styles);
+
+                    goalLabel = layer.addLabel(options);
+                    goalLabel.scaleTo(0.15f, 0.15f);
+                    Log.d("MapFragment","라벨 그렸어요");
+                    CameraUpdate cameraUpdatetoGoal = CameraUpdateFactory.newCenterPosition(LatLng.from((Mylocation.StartPlace.getY()+Mylocation.selectedPlace.getY())/2,(Mylocation.StartPlace.getX()+Mylocation.selectedPlace.getX())/2),13);
+                    thiskakaoMap.moveCamera(cameraUpdatetoGoal);
+                }
                 // 선택한 장소의 마커를 지도에 표시
-                LabelLayer layer = thiskakaoMap.getLabelManager().getLayer();
-                if (startLabel != null) {
-                    layer.remove(startLabel);
-                }
-                 if (goalLabel != null) {
-                     layer.remove(goalLabel);
-                }
-                LabelStyles startstyles = thiskakaoMap.getLabelManager()
-                .addLabelStyles(LabelStyles.from(LabelStyle.from(R.drawable.goalmarker).setTextStyles(20, Color.BLACK).setApplyDpScale(false)));
 
-                 LabelOptions startoptions = LabelOptions.from(LatLng.from(Mylocation.StartPlace.getY(), Mylocation.StartPlace.getX())).setTexts("출발").setStyles(startstyles);
-                 startLabel = layer.addLabel(startoptions);
-                 startLabel.scaleTo(0.15f, 0.15f);
-
-                LabelStyles styles = thiskakaoMap.getLabelManager()
-                        .addLabelStyles(LabelStyles.from(LabelStyle.from(R.drawable.goalmarker).setTextStyles(20, Color.BLACK).setApplyDpScale(false)));
-                LabelOptions options = LabelOptions.from(LatLng.from(Mylocation.selectedPlace.getY(), Mylocation.selectedPlace.getX())).setTexts("도착").setStyles(styles);
-
-                goalLabel = layer.addLabel(options);
-                goalLabel.scaleTo(0.15f, 0.15f);
-                CameraUpdate cameraUpdatetoGoal = CameraUpdateFactory.newCenterPosition(LatLng.from((Mylocation.Lastlocation.getLatitude()+Mylocation.selectedPlace.getY())/2,(Mylocation.Lastlocation.getLongitude()+Mylocation.selectedPlace.getX())/2),13);
-                thiskakaoMap.moveCamera(cameraUpdatetoGoal);
 
     }
     public void GetRoute(){

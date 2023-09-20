@@ -49,8 +49,6 @@ public class SearchPage extends AppCompatActivity {
     //검색버튼
     private Button findbtn;
     private ImageButton backbutton;
-    //카카오맵 (MainActivity의 kakaoMap과 연계하기위함)
-    KakaoMap kakaoMap;
     //REST API 에서 검색한 장소들을 Place 형태로 SearchResponse가 받음
     public class SearchResponse {
         private List<MapFragment.Place> documents;
@@ -76,7 +74,6 @@ public class SearchPage extends AppCompatActivity {
         goalEditText=findViewById(R.id.goalEditText);
         resultListView = findViewById(R.id.resultListView);
         backbutton=findViewById(R.id.backbutton);
-        kakaoMap = MapFragment.thiskakaoMap;
 
         backbutton.setOnClickListener(new View.OnClickListener() {
             @Override

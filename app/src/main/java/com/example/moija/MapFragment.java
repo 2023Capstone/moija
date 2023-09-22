@@ -15,16 +15,24 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.kakao.vectormap.KakaoMap;
 import com.kakao.vectormap.KakaoMapReadyCallback;
@@ -114,7 +122,39 @@ public class MapFragment extends Fragment {
 
         context=requireContext();
         MapView mapView = rootview.findViewById(R.id.map_view);
-        FloatingActionButton searchbtn=rootview.findViewById(R.id.searchbtn);
+        FloatingActionButton menubtn=rootview.findViewById(R.id.menubtn);
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        DrawerLayout drawerLayout = activity.findViewById(R.id.drawer_layout);
+        NavigationView navigationView = activity.findViewById(R.id.nav_view);
+
+        // 메뉴바의 아이템들을 눌렀을때
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                // 아이템을 선택했을 때 실행할 동작 구현
+                int itemId = item.getItemId();
+                if (itemId == R.id.menuitem1) {
+                    Intent Movetosearch = new Intent(getActivity(), SearchPage.class);
+                    startActivity(Movetosearch);
+                } else if (itemId == R.id.menuitem2) {
+                    Toast.makeText(getActivity().getApplicationContext(), "버스노선 확인", Toast.LENGTH_SHORT).show();
+                } else if (itemId == R.id.menuitem3) {
+                    Toast.makeText(getActivity().getApplicationContext(), "다른 메뉴", Toast.LENGTH_SHORT).show();
+                }
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
+            }
+        });
+
+
+
+
+        menubtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDrawer();
+            }
+        });
         mapView.start(new MapLifeCycleCallback() {
             @Override
             public void onMapDestroy() {
@@ -230,17 +270,9 @@ public class MapFragment extends Fragment {
                 }
             }
         });
-        //검색(돋보기)버튼 누르면 검색페이지로 이동
-        searchbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent Movetosearch=new Intent(getActivity(),SearchPage.class);
-                startActivity(Movetosearch);
-            }
-        });
         return rootview;
     }
+
     //길찾기 메서드
     public void FindGoal(){
                 //경로를 그리는 메서드 호출
@@ -273,6 +305,30 @@ public class MapFragment extends Fragment {
                     thiskakaoMap.moveCamera(cameraUpdatetoGoal);
                 }
     }
+
+
+    private void openDrawer() {
+        // 부모 액티비티의 참조를 얻어옵니다.
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+
+        // 부모 액티비티의 DrawerLayout을 찾습니다.
+        DrawerLayout drawerLayout = activity.findViewById(R.id.drawer_layout);
+
+        // 드로어를 엽니다.
+        drawerLayout.openDrawer(GravityCompat.START); // START는 왼쪽 드로어, END는 오른쪽 드로어를 열도록 지정합니다.
+    }
+    private void closeDrawer() {
+        // 부모 액티비티의 참조를 얻어옵니다.
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+
+        // 부모 액티비티의 DrawerLayout을 찾습니다.
+        DrawerLayout drawerLayout = activity.findViewById(R.id.drawer_layout);
+
+        // 드로어를 닫습니다.
+        drawerLayout.closeDrawer(GravityCompat.START); // START는 왼쪽 드로어, END는 오른쪽 드로어를 닫도록 지정합니다.
+    }
+
+
     //경로를 그려주는 함수
     public void GetRoute(){
         //모빌리티 api 정보를 retrofit으로 받아오기

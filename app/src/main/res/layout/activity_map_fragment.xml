@@ -8,17 +8,19 @@
     android:background="@color/white"
     tools:context=".MapFragment">
 
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/searchbtn"
+        android:id="@+id/menubtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/find"
+        android:src="@drawable/menu"
         android:backgroundTint="@color/white"
-        android:layout_gravity="top|end"
+        android:layout_gravity="left|end"
         android:layout_margin="16dp" />
     <com.kakao.vectormap.MapView
         android:id="@+id/map_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 
 </FrameLayout>

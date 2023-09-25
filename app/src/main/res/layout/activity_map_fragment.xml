@@ -7,14 +7,9 @@
     android:orientation="vertical"
     tools:context=".MapFragment">
 
-    <Button
-        android:layout_width="300dp"
-        android:layout_height="241dp"
-        android:background="#5E2B2B"
-        android:text="지도 버튼" />
-    <TextView
-        android:text="안녕"
-        android:layout_width="300dp"
-        android:layout_height="100dp"/>
+    <com.kakao.vectormap.MapView
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

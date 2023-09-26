@@ -7,22 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-=======
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-=======
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-=======
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-=======
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
+
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,6 +17,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -52,55 +39,19 @@ public class LoginActivity extends AppCompatActivity {
     private TextView nickName;
     private ImageView profileImage;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 
 
     private DatabaseReference databaseReference;
 
-  @Override
-=======
-=======
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-=======
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-=======
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-=======
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-    private Button btn_1,send_img;
-
     @Override
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         loginButton = findViewById(R.id.login);
-        logoutButton = findViewById(R.id.logout);
-        nickName = findViewById(R.id.nickname);
-        profileImage = findViewById(R.id.profile);
-        btn_1 = findViewById(R.id.btn_1);
-        send_img = findViewById(R.id.send_img);
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-=======
-
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-=======
-
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-=======
-
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
 
 
         // 카카오가 설치되어 있는지 확인 하는 메서드또한 카카오에서 제공 콜백 객체를 이용함
@@ -121,22 +72,9 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
 
-        send_img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
         //firebase 버튼
 
-        btn_1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(), test2.class);
-                startActivity(intent);
-            }
-        });
 
 
 
@@ -149,19 +87,6 @@ public class LoginActivity extends AppCompatActivity {
                 }else {
                     UserApiClient.getInstance().loginWithKakaoAccount(LoginActivity.this, callback);
                 }
-            }
-        });
-        // 로그 아웃 버튼
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                UserApiClient.getInstance().logout(new Function1<Throwable, Unit>() {
-                    @Override
-                    public Unit invoke(Throwable throwable) {
-                        updateKakaoLoginUi();
-                        return null;
-                    }
-                });
             }
         });
         updateKakaoLoginUi();
@@ -185,8 +110,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     Glide.with(profileImage).load(user.getKakaoAccount().
                             getProfile().getProfileImageUrl()).circleCrop().into(profileImage);
-                    loginButton.setVisibility(View.GONE);
-                    logoutButton.setVisibility(View.VISIBLE);
+
                     Toast.makeText(LoginActivity.this, "로그인됨", Toast.LENGTH_SHORT).show();
                 }else {
                     // 로그인이 되어 있지 않다면 위와 반대로
@@ -194,7 +118,6 @@ public class LoginActivity extends AppCompatActivity {
                     nickName.setText(null);
                     profileImage.setImageBitmap(null);
                     loginButton.setVisibility(View.VISIBLE);
-                    logoutButton.setVisibility(View.GONE);
                 }
                 return null;
             }

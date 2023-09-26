@@ -8,33 +8,13 @@
     android:orientation="vertical"
     tools:context=".LoginActivity">
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     <TextView
         android:id="@+id/tv"
-=======
-    <LinearLayout
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-=======
-    <LinearLayout
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-=======
-    <LinearLayout
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-=======
-    <LinearLayout
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-=======
-    <LinearLayout
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"/>
 
         <ImageView
             android:id="@+id/profile"
@@ -47,34 +27,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <Button
-            android:id="@+id/send_img"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="프로필 이미지 서버로 보내기 firebase" />
-
-        <Button
-            android:id="@+id/logout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="로그아웃" />
-
-        <Button
-            android:id="@+id/btn_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="firebase realtime database 연동" />
-
-    </LinearLayout>
-
 
     <ImageView
         android:id="@+id/login"
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         android:layout_width="370dp"
         android:layout_height="70dp"
         android:layout_gravity="center"
@@ -82,44 +37,5 @@
 
 
 
-        <!-- 이 버튼은 나중에 다 완성 되면 지워야함 로그인 >> 채팅 선택 >> 채팅 / 맵 (여기 코드)  -->
-
-
-<!--로그아웃 구현-->
-<!--    <Button-->
-<!--        android:id="@+id/logout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="로그아웃" />-->
-
-    <ImageView
-        android:id="@+id/img1"
-=======
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-=======
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-=======
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-=======
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-=======
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/kakao_login_large_wide"
-    android:visibility="gone"/>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-=======
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-=======
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
-
->>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
 
 </LinearLayout>

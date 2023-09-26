@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.graphics.PointF;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,6 +92,10 @@ public class MapFragment extends Fragment {
                                 if (location != null) {
                                     locationData.setLatitude(location.getLatitude());
                                     locationData.setLongitude(location.getLongitude());
+                                    String msg = String.valueOf(location.getLongitude());
+                                    String msg2 = String.valueOf(location.getLatitude());
+                                    Log.d("MyApp", msg);
+                                    Log.d("MyApp", msg2);
                                 }
                             }
                         });

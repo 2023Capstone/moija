@@ -8,10 +8,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -60,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
             public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
                 // 이때 토큰이 전달이 되면 로그인이 성공한 것이고 토큰이 전달되지 않았다면 로그인 실패
                 if(oAuthToken != null) {
+
                 }
                 if (throwable != null) {
 
@@ -91,12 +96,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-
-        //firebase 버튼
-
-
-
-
     // 로그인 버튼
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,19 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-        // 로그 아웃 버튼
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                UserApiClient.getInstance().logout(new Function1<Throwable, Unit>() {
-                    @Override
-                    public Unit invoke(Throwable throwable) {
-                        updateKakaoLoginUi();
-                        return null;
-                    }
-                });
-            }
-        });
+
         updateKakaoLoginUi();
     }
 
@@ -160,35 +147,3 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 }
-
-//    private  void updateKakaoLoginUi(){
-//        UserApiClient.getInstance().me(new Function2<User, Throwable, Unit>() {
-//            @Override
-//            public Unit invoke(User user, Throwable throwable) {
-//                // 로그인이 되어있으면
-//                if (user!=null){
-//
-//                    // 유저의 아이디D
-//                    Log.d(TAG,"invoke: id" +user.getId());
-//                    // 유저의 어카운트정보에 이메일
-//                    Log.d(TAG,"invoke: nickname" + user.getKakaoAccount().getEmail());
-//                    // 유저의 어카운트 정보의 프로파일에 닉네임
-//                    Log.d(TAG,"invoke:" + user.getKakaoAccount().getProfile().getNickname());
-//                    Log.d(TAG,"invoke:" + user.getKakaoAccount().getProfile());
-//
-//                    //database에 로그인 정보 전송
-//
-//                    databaseReference= FirebaseDatabase.getInstance().getReference().child("user");
-//
-//                    DatabaseReference sendUserData=databaseReference.child(user.getId().toString());
-//                    //쓰기
-//                    sendUserData.child("name").setValue(user.getKakaoAccount().getProfile().getNickname());
-//                    sendUserData.child("email").setValue(user.getKakaoAccount().getEmail());
-//                    sendUserData.child("thumbnail").setValue(user.getKakaoAccount().getProfile().getThumbnailImageUrl());
-//                    Toast.makeText(LoginActivity.this, "로그인됨", Toast.LENGTH_SHORT).show();
-//                    Intent intent=new Intent(getApplicationContext(), test2.class);
-//                    startActivity(intent);
-//                }else {
-//                    // 로그인이 되어 있지 않다면 위와 반대로
-//                    Toast.makeText(LoginActivity.this, "로그인실패", Toast.LENGTH_SHORT).show();
-//

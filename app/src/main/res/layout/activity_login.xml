@@ -10,8 +10,12 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <TextView
         android:id="@+id/tv"
+=======
+    <LinearLayout
+>>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
 =======
     <LinearLayout
 >>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
@@ -60,6 +64,7 @@
         android:id="@+id/login"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         android:layout_width="370dp"
         android:layout_height="70dp"
         android:layout_gravity="center"
@@ -83,12 +88,17 @@
 >>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
 =======
 >>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
+=======
+>>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/kakao_login_large_wide"
     android:visibility="gone"/>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
 
 >>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
 

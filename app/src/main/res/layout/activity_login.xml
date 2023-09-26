@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".LoginActivity">
+
+
+
+
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:gravity="center"
+        android:text="MoYeo"
+        android:textAlignment="center"
+        android:textColor="#0A94CC"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.24" />
+
+    <ImageView
+        android:id="@+id/login"
+        android:layout_width="370dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:src="@drawable/kakao_login_large_wide"/>
+
+
+
+<!--로그아웃 구현-->
+<!--    <Button-->
+<!--        android:id="@+id/logout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="로그아웃" />-->
+
+    <ImageView
+        android:id="@+id/img1"
+        android:layout_width="match_parent"
+        android:layout_height="413dp"
+        android:src="@drawable/img"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="367dp" />
+
+
+</LinearLayout>

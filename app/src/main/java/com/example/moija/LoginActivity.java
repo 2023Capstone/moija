@@ -10,7 +10,10 @@ import android.view.View;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
 =======
 >>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
 =======
@@ -49,12 +52,15 @@ public class LoginActivity extends AppCompatActivity {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
     private DatabaseReference databaseReference;
 
   @Override
 =======
+=======
+>>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
 =======
 >>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
 =======
@@ -75,6 +81,10 @@ public class LoginActivity extends AppCompatActivity {
         send_img = findViewById(R.id.send_img);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
 =======
 
 >>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)

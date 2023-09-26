@@ -36,9 +36,9 @@ public class test2 extends AppCompatActivity {
 
                 //쓰기
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("user");
+                DatabaseReference myRef = database.getReference("message");
 
-                myRef.push().setValue(writeEdit.getText().toString());
+                myRef.setValue(writeEdit.getText().toString());
 
                 // 읽기 eventListener 데이터베이스의 값이 바뀌면 자동으로 변경됨
                 myRef.addValueEventListener(new ValueEventListener() {

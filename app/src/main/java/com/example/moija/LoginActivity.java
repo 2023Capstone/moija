@@ -36,15 +36,35 @@ public class LoginActivity extends AppCompatActivity {
     private TextView nickName;
     private ImageView profileImage;
 
+
+    //Fragment_btn은 나중에 삭제
+    private Button btn_1,send_img,Fragment_btn;
+
+
     private DatabaseReference databaseReference;
-    @Override
+
+  @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         loginButton = findViewById(R.id.login);
+        logoutButton = findViewById(R.id.logout);
+        nickName = findViewById(R.id.nickname);
+        profileImage = findViewById(R.id.profile);
+        btn_1 = findViewById(R.id.btn_1);
+        send_img = findViewById(R.id.send_img);
+        //나중에 삭제
+        Fragment_btn = findViewById(R.id.Fragment_btn);
 
-
+        //<!-- 이 버튼은 나중에 다 완성 되면 지워야함 로그인 >> 채팅 선택 >> 채팅 / 맵 (여기 코드)  -->
+        Fragment_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Fragment_Chat_Map.class);
+                startActivity(intent);
+            }
+        });
         // 카카오가 설치되어 있는지 확인 하는 메서드또한 카카오에서 제공 콜백 객체를 이용함
         Function2<OAuthToken, Throwable, Unit> callback = new  Function2<OAuthToken, Throwable, Unit>() {
             @Override

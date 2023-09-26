@@ -3,12 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center_horizontal">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="방 생성"
-        android:textSize="30sp" />
+        android:textSize="32dp"
+        android:textColor="#FFFFFFFF"
+        android:background="#FF3F3F3F"
+        android:gravity="center"/>
     <EditText
         android:id="@+id/roomName"
         android:layout_width="match_parent"

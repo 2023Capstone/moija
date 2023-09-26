@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 
 import android.widget.Button;
@@ -17,9 +18,13 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.firebase.storage.UploadTask;
 import com.kakao.sdk.auth.model.OAuthToken;
 import com.kakao.sdk.user.UserApiClient;
@@ -29,7 +34,10 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.File;
 
+import java.io.File;
+
 import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import kotlin.jvm.functions.Function1;
 import kotlin.jvm.functions.Function2;
 
@@ -51,6 +59,13 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         loginButton = findViewById(R.id.login);
+        logoutButton = findViewById(R.id.logout);
+        nickName = findViewById(R.id.nickname);
+        profileImage = findViewById(R.id.profile);
+        btn_1 = findViewById(R.id.btn_1);
+        send_img = findViewById(R.id.send_img);
+
+
 
 
 
@@ -72,6 +87,25 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
 
+        send_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        //firebase 버튼
+
+        btn_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(), test2.class);
+                startActivity(intent);
+            }
+        });
+
+
+
 
         //firebase 버튼
 
@@ -89,8 +123,10 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
         updateKakaoLoginUi();
     }
+
 
     private  void updateKakaoLoginUi(){
         UserApiClient.getInstance().me(new Function2<User, Throwable, Unit>() {
@@ -108,21 +144,20 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d(TAG,"invoke: email" + user.getKakaoAccount().getProfile());
                     nickName.setText(user.getKakaoAccount().getProfile().getNickname());
 
-                    Glide.with(profileImage).load(user.getKakaoAccount().
-                            getProfile().getProfileImageUrl()).circleCrop().into(profileImage);
+              
 
                     Toast.makeText(LoginActivity.this, "로그인됨", Toast.LENGTH_SHORT).show();
                 }else {
                     // 로그인이 되어 있지 않다면 위와 반대로
                     Toast.makeText(LoginActivity.this, "로그인실패", Toast.LENGTH_SHORT).show();
-                    nickName.setText(null);
-                    profileImage.setImageBitmap(null);
-                    loginButton.setVisibility(View.VISIBLE);
                 }
                 return null;
             }
         });
 
 
+
+
     }
+
 }

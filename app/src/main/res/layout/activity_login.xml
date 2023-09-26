@@ -8,10 +8,6 @@
     android:orientation="vertical"
     tools:context=".LoginActivity">
 
-
-
-
-
     <TextView
         android:id="@+id/tv"
         android:layout_width="match_parent"
@@ -38,13 +34,7 @@
 
 
         <!-- 이 버튼은 나중에 다 완성 되면 지워야함 로그인 >> 채팅 선택 >> 채팅 / 맵 (여기 코드)  -->
-        <Button
-            android:id="@+id/Fragment_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Fragment 채팅 / 맵으로 이동" />
 
-    </LinearLayout>
 
 <!--로그아웃 구현-->
 <!--    <Button-->
@@ -60,6 +50,5 @@
         android:src="@drawable/img"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="367dp" />
-
 
 </LinearLayout>

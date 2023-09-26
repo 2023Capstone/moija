@@ -14,11 +14,6 @@
         tools:layout_editor_absoluteX="176dp"
         tools:layout_editor_absoluteY="374dp" />
 
-    <android.widget.Button
-        android:text="버튼"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:background="@drawable/btn_background"/>
 
 
 </LinearLayout>

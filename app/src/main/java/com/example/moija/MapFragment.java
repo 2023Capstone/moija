@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.type.LatLng;
 import com.kakao.sdk.template.model.Button;
 import com.kakao.vectormap.MapView;
 import com.kakao.vectormap.KakaoMap;

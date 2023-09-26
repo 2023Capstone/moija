@@ -17,6 +17,7 @@
         android:backgroundTint="@color/white"
         android:layout_gravity="left|end"
         android:layout_margin="16dp" />
+
     <com.kakao.vectormap.MapView
         android:id="@+id/map_view"
         android:layout_width="match_parent"

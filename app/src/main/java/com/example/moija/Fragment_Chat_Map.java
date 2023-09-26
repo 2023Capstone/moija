@@ -13,6 +13,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -21,8 +23,10 @@ import com.kakao.vectormap.camera.CameraUpdate;
 import com.kakao.vectormap.camera.CameraUpdateFactory;
 
 public class Fragment_Chat_Map extends AppCompatActivity {
-    Button btn_map, btn_chat;
+    Button btn_map, btn_chat,setGoalyesbtn,setGoalnobtn;
+    LinearLayout goallayout;
 
+    TextView routeinfo;
     private ChatFragment chatFragment;
     private MapFragment mapFragment;
     private FragmentManager fragmentManager;
@@ -33,13 +37,15 @@ public class Fragment_Chat_Map extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment_chat_map);
         fragmentManager = getSupportFragmentManager();
-
+        goallayout=findViewById(R.id.setGoalLayout);
+        setGoalyesbtn=findViewById(R.id.yesbtn);
+        setGoalnobtn=findViewById(R.id.nobtn);
         btn_chat = findViewById(R.id.btn_chat);
         btn_map = findViewById(R.id.btn_map);
-
+        routeinfo=findViewById(R.id.Routeinfo);
         // ChatFragment와 MapFragment 인스턴스 초기화
         chatFragment = new ChatFragment();
-        mapFragment = new MapFragment();
+        mapFragment = new MapFragment(goallayout,routeinfo);
         fragmentManager.beginTransaction().replace(R.id.fragmentContainer, chatFragment).commit();
         fragmentManager.beginTransaction().add(R.id.fragmentContainer, mapFragment).commit();
 
@@ -88,6 +94,20 @@ public class Fragment_Chat_Map extends AppCompatActivity {
 
 
 
+            }
+        });
+        setGoalyesbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"설정합니다",Toast.LENGTH_SHORT);
+                goallayout.setVisibility(View.INVISIBLE);
+            }
+        });
+        setGoalnobtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"설정안합니다",Toast.LENGTH_SHORT);
+                goallayout.setVisibility(View.INVISIBLE);
             }
         });
     }

@@ -18,6 +18,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -39,6 +41,7 @@ import com.kakao.vectormap.KakaoMapReadyCallback;
 import com.kakao.vectormap.LatLng;
 import com.kakao.vectormap.MapLifeCycleCallback;
 import com.kakao.vectormap.MapView;
+import com.kakao.vectormap.camera.CameraAnimation;
 import com.kakao.vectormap.camera.CameraUpdate;
 import com.kakao.vectormap.camera.CameraUpdateFactory;
 import com.kakao.vectormap.label.Label;
@@ -59,6 +62,13 @@ import retrofit2.http.Header;
 import retrofit2.http.Query;
 
 public class MapFragment extends Fragment {
+
+    LinearLayout setGoalLayout;
+    TextView routeinfo;
+    public MapFragment(LinearLayout linearLayout, TextView textView) {
+        this.setGoalLayout = linearLayout;
+        this.routeinfo=textView;
+    }
     //kakaoMap을 OnMapReady가 아닌 다른곳에서도 호출할 수 있게 선언
     KakaoMap thiskakaoMap;
     public static Context context;
@@ -192,9 +202,12 @@ public class MapFragment extends Fragment {
                     MyLabel = layer.addLabel(options);
                     //마커 이미지 크기 조절
                     MyLabel.scaleTo(0.15f, 0.15f);
-                    //카메라를 현재 위치로 바꿈
-                    CameraUpdate cameraUpdate = CameraUpdateFactory.newCenterPosition(LatLng.from(Mylocation.Lastlocation.getLatitude(), Mylocation.Lastlocation.getLongitude()));
-                    kakaoMap.moveCamera(cameraUpdate);
+                    if(MovecameraFirst==false) {
+                        //카메라를 현재 위치로 바꿈
+                        CameraUpdate cameraUpdate = CameraUpdateFactory.newCenterPosition(LatLng.from(Mylocation.Lastlocation.getLatitude(), Mylocation.Lastlocation.getLongitude()));
+                        kakaoMap.moveCamera(cameraUpdate);
+                        MovecameraFirst=true;
+                    }
                 }
                 final LocationListener gpsLocationListener = new LocationListener() {
                     //장소가 바뀌었으면
@@ -300,9 +313,25 @@ public class MapFragment extends Fragment {
                     LabelOptions options = LabelOptions.from(LatLng.from(Mylocation.selectedPlace.getY(), Mylocation.selectedPlace.getX())).setTexts("도착").setStyles(styles);
                     goalLabel = layer.addLabel(options);
                     goalLabel.scaleTo(0.15f, 0.15f);
+                    Mylocation.startLocation.setLatitude(Mylocation.StartPlace.getY());
+                    Mylocation.startLocation.setLongitude(Mylocation.StartPlace.getX());
+                    Mylocation.selectedLocation.setLatitude(Mylocation.selectedPlace.getY());
+                    Mylocation.selectedLocation.setLongitude(Mylocation.selectedPlace.getX());
+                    float distance = Mylocation.startLocation.distanceTo(Mylocation.selectedLocation);
+                    int zoomLevel;
+                    if (distance < 1000) {
+                        zoomLevel = 15;  // 거리가 1km 미만이면 확대 수준 15
+                    } else if (distance < 5000) {
+                        zoomLevel = 13;  // 거리가 5km 미만이면 확대 수준 13
+                    } else {
+                        zoomLevel = 10;  // 그 외의 경우 확대 수준 10
+                    }
                     //카메라를 시작 지점, 끝지점 사이 중간 쪽으로 이동
-                    CameraUpdate cameraUpdatetoGoal = CameraUpdateFactory.newCenterPosition(LatLng.from((Mylocation.StartPlace.getY()+Mylocation.selectedPlace.getY())/2,(Mylocation.StartPlace.getX()+Mylocation.selectedPlace.getX())/2),13);
-                    thiskakaoMap.moveCamera(cameraUpdatetoGoal);
+                    setGoalLayout.setVisibility(View.VISIBLE);
+                    routeinfo.setText(Mylocation.StartPlace.getPlaceName()+"-"+Mylocation.selectedPlace.getPlaceName());
+                    CameraUpdate cameraUpdatetoGoal = CameraUpdateFactory.newCenterPosition(LatLng.from((Mylocation.StartPlace.getY()+Mylocation.selectedPlace.getY())/2,(Mylocation.StartPlace.getX()+Mylocation.selectedPlace.getX())/2),zoomLevel);
+                    thiskakaoMap.moveCamera(cameraUpdatetoGoal, CameraAnimation.from(500, true, true));
+
                 }
     }
 

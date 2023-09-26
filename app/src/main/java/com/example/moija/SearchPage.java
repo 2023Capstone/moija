@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.annotations.SerializedName;
 import com.kakao.vectormap.KakaoMap;
 
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Query;
 //검색 페이지에 관한 내용
 public class SearchPage extends AppCompatActivity {
+
     //검색창
     private EditText startEditText;
     //시작점을 검색하는건지 도착지점을 검색하는지 나누는 변수 (0: 시작점 1: 도착점)
@@ -68,6 +71,65 @@ public class SearchPage extends AppCompatActivity {
 
         );
     }
+    //카카오 restapi에서 주소명을 담는 클래스
+    public class KakaoAddressResponse {
+
+        @SerializedName("documents")
+        private ArrayList<Document> documents;
+
+        public ArrayList<Document> getDocuments() {
+            return documents;
+        }
+
+        public void setDocuments(ArrayList<Document> documents) {
+            this.documents = documents;
+        }
+    }
+
+
+    public class Document{
+        @SerializedName("road_address")
+        public RoadAddress road_address;
+        public RoadAddress getRoadAddress(){
+            return road_address;
+        }
+        public void setRoad_address(RoadAddress road_address){
+            this.road_address=road_address;
+        }
+
+    }
+
+
+    
+    public class RoadAddress{
+        //주소명
+        @SerializedName("address_name")
+        public String address_name;
+        public String getAddress_name(){
+            return address_name;
+        }
+        public void setAddress_name(String address_name){
+            this.address_name=address_name;
+        }
+        @SerializedName("building_name")
+        public String building_name;
+        public String getBuilding_name(){
+            return building_name;
+        }
+        public void setBuilding_name(String building_name){
+            this.building_name=building_name;
+        }
+    }
+
+    //현재 위치 위도,경도를 입력하면 가까운 주소(건물이름)을 반환하는 api를 쿼리로 요청(retrofit)
+    public interface KakaoApiService {
+        @GET("/v2/local/geo/coord2address.json")
+        Call<KakaoAddressResponse> getAddress(
+                @Header("Authorization") String authorization,
+                @Query("x") double longitude,
+                @Query("y") double latitude
+        );
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +138,8 @@ public class SearchPage extends AppCompatActivity {
         goalEditText=findViewById(R.id.goalEditText);
         resultListView = findViewById(R.id.resultListView);
         backbutton=findViewById(R.id.backbutton);
+        FindMyAddress();
+
         //뒤로가기 버튼 누르면 맵 채팅 화면으로 이동
         backbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,8 +222,11 @@ public class SearchPage extends AppCompatActivity {
                     //출발위치를 선택한 위치로 결정
                     startEditText.setText("출발 위치: " + selected.getPlaceName());
                     Startplace=selected;
+
+
                     Startsearched=true;
                     Mylocation.StartPlace=selected;
+
                     //아직 도착점 안정했으면
                     if(Goalsearched==false)
                     {
@@ -257,12 +324,79 @@ public class SearchPage extends AppCompatActivity {
                 Location findplace=new Location("finded location");
                 findplace.setLatitude(place.getY());
                 findplace.setLongitude(place.getX());
+                float distancetoFind=Mylocation.Lastlocation.distanceTo(findplace)/1000;
+                String distancetoString=String.format("%.1f",distancetoFind);
                 //현재위치와의 거리를 나타냄 (시작점을 검색으로 하면 시작점과의 거리로 바꿔야할수도 있음)
-                placedistance.setText(Math.floor(Mylocation.Lastlocation.distanceTo(findplace)/1000)+"km");
+                placedistance.setText(distancetoString+"km");
             }
 
             return view;
         }
+    }
+    //내 위치에서 가장 가까운 주소명을 받아 시작점 edittext에 띄우는 코드
+    public void FindMyAddress(){
+            // Retrofit2를 사용하여 카카오맵 REST API에 검색 요청을 보냄
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            KakaoApiService kakaoApiservice = retrofit.create(KakaoApiService.class);
+
+            Call<KakaoAddressResponse> call = kakaoApiservice.getAddress("KakaoAK " + API_KEY, Mylocation.Lastlocation.getLongitude(), Mylocation.Lastlocation.getLatitude());
+
+            call.enqueue(new Callback<KakaoAddressResponse>() {
+                @Override
+                public void onResponse(Call<KakaoAddressResponse> call, Response<KakaoAddressResponse> response) {
+                    if (response.isSuccessful()) {
+                        KakaoAddressResponse addressResponse = response.body();
+                        if (addressResponse != null && addressResponse.getDocuments().size() > 0) {
+                            String addressName = addressResponse.getDocuments().get(0).getRoadAddress().getBuilding_name();
+                            setStarttoMyaddress(addressName);
+                            startEditText.setText("현재 위치 : "+addressName);
+                            Startsearched=true;
+                        } else {
+                            Log.d("KakaoAddressSearch", "주소를 찾을 수 없습니다.");
+                        }
+                    } else {
+                        Log.d("KakaoAddressSearch", "API 호출 실패: " + response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<KakaoAddressResponse> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+
+    }
+    //현재 위치를 토대로 검색하고, 가장 가까운 위치를 찾아 그 위치를 시작점으로 설정해주는 코드
+    public void setStarttoMyaddress(String MyAddress){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        KakaoMapApi kakaoMapApi = retrofit.create(KakaoMapApi.class);
+
+        Call<SearchResponse> call = kakaoMapApi.searchPlaces("KakaoAK " + API_KEY, MyAddress,Mylocation.Lastlocation.getLongitude(),Mylocation.Lastlocation.getLatitude());
+
+        call.enqueue(new Callback<SearchResponse>() {
+            @Override
+            public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
+                if (response.isSuccessful()) {
+                    //searchResponse에 api 응답을 받고
+                    SearchResponse searchResponse = response.body();
+                    List<MapFragment.Place> searchedplace = searchResponse.getDocuments();
+                    Mylocation.StartPlace=searchedplace.get(0);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SearchResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
     //검색 로직
     public void search(EditText searchbox,int searchcode) {

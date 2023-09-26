@@ -9,5 +9,7 @@ import android.location.Location;
 public class Mylocation{
     public static Location Lastlocation;
     public static MapFragment.Place selectedPlace;
+    public static Location selectedLocation=new Location("Goal");
     public static MapFragment.Place StartPlace;
+    public static Location startLocation=new Location("Start");
 }

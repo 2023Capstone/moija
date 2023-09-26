@@ -8,7 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
 =======
 >>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
 import android.widget.Button;
@@ -41,12 +44,15 @@ public class LoginActivity extends AppCompatActivity {
     private ImageView profileImage;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
     private DatabaseReference databaseReference;
 
   @Override
 =======
+=======
+>>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
     private Button btn_1,send_img;
 
     @Override
@@ -61,6 +67,10 @@ public class LoginActivity extends AppCompatActivity {
         profileImage = findViewById(R.id.profile);
         btn_1 = findViewById(R.id.btn_1);
         send_img = findViewById(R.id.send_img);
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of f30084d (Merge pull request #1 from 2023Capstone/hojin)
 
 
         // 카카오가 설치되어 있는지 확인 하는 메서드또한 카카오에서 제공 콜백 객체를 이용함

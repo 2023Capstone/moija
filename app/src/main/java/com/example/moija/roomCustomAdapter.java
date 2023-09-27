@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder>{
+public class roomCustomAdapter extends RecyclerView.Adapter<roomCustomAdapter.ViewHolder>{
 
     private ArrayList<String> localDataSet;
 
@@ -50,7 +50,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     //----- 생성자 ---------------------------------------------------------
     // 생성자를 통해서 데이터를 전달받도록 함
-    public CustomAdapter (ArrayList<String> dataSet) {
+    public roomCustomAdapter (ArrayList<String> dataSet) {
         localDataSet = dataSet;
     }
     //---------------------------------------------------------------------
@@ -58,11 +58,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     //----- RecyclerView Adapter 필수 구현 항목 ----------------------------
     @NonNull
     @Override   // ViewHolder 객체를 생성하여 리턴한다.
-    public CustomAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public roomCustomAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recyclerview_item, parent, false);
+                .inflate(R.layout.room_recyclerview_item, parent, false);
 
-        CustomAdapter.ViewHolder viewHolder = new CustomAdapter.ViewHolder(view);
+        roomCustomAdapter.ViewHolder viewHolder = new roomCustomAdapter.ViewHolder(view);
 
         //===== [Click 이벤트 구현을 위해 추가된 코드] =====================
         view.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +82,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     }
 
     @Override   // ViewHolder안의 내용을 position에 해당되는 데이터로 교체한다.
-    public void onBindViewHolder(@NonNull CustomAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull roomCustomAdapter.ViewHolder holder, int position) {
         String text = localDataSet.get(position);
         holder.textView.setText(text);
     }

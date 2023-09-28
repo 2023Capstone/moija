@@ -12,11 +12,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.ktx.Firebase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -33,8 +38,8 @@ import kotlin.jvm.functions.Function2;
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private View loginButton, logoutButton;
-    private TextView nickName;
-    private ImageView profileImage;
+
+
 
     private DatabaseReference databaseReference;
     @Override
@@ -87,28 +92,34 @@ public class LoginActivity extends AppCompatActivity {
                 if (user != null) {
                     // 유저의 아이디
                     String userId = user.getId().toString();
+                    String email = user.getKakaoAccount().getEmail();
 
                     // Firebase 데이터베이스 인스턴스 가져오기
                     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("user");
 
                     // 해당 아이디로 데이터베이스에서 데이터 가져오기
                     DatabaseReference userRef = databaseReference.child(userId);
-
                     userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
                                 // 이미 해당 아이디로 데이터가 존재하는 경우
                                 Toast.makeText(LoginActivity.this, "이미 로그인되어 있습니다.", Toast.LENGTH_SHORT).show();
+
+                                FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,userId)
+                                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                if (task.isSuccessful()) {
+                                                } else {
+                                                }
+                                            }
+                                        });
+
                                 Intent intent = new Intent(getApplicationContext(), chatList.class);
                                 startActivity(intent);
                             } else {
-                                // 해당 아이디로 데이터가 존재하지 않는 경우, 데이터 저장
-//                                Log.d(TAG, "invoke: id" + userId);
-//                                Log.d(TAG, "invoke: nickname" + user.getKakaoAccount().getEmail());
-//                                Log.d(TAG, "invoke:" + user.getKakaoAccount().getProfile().getNickname());
-//                                Log.d(TAG, "invoke:" + user.getKakaoAccount().getProfile());
-
+                                // 새로 로그인 하는 경우
                                 DatabaseReference sendUserData = databaseReference.child(userId);
                                 // 데이터 쓰기
                                 sendUserData.child("name").setValue(user.getKakaoAccount().getProfile().getNickname());
@@ -117,9 +128,24 @@ public class LoginActivity extends AppCompatActivity {
 
                                 //Toast 알림
                                 Toast.makeText(LoginActivity.this, "로그인됨", Toast.LENGTH_SHORT).show();
+
+
+                                FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,userId)
+                                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                if (task.isSuccessful()) {
+
+                                                } else {
+                                                }
+                                            }
+                                        });
                                 //화면이동
+
                                 Intent intent = new Intent(getApplicationContext(), chatList.class);
                                 startActivity(intent);
+
+
                             }
                         }
 
@@ -132,6 +158,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     // 로그인이 되어 있지 않다면
                     Toast.makeText(LoginActivity.this, "로그인실패", Toast.LENGTH_SHORT).show();
+
                 }
                 return null;
             }

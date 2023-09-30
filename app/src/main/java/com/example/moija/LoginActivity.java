@@ -67,67 +67,86 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public Unit invoke(User user, Throwable throwable) {
                 if (user != null) {
-                    // Get the Kakao user details
+                    //                    // 유저의 아이디D
+                    Log.d(TAG,"invoke: id" +user.getId());
+//                    // 유저의 어카운트정보에 이메일
+                    Log.d(TAG,"invoke: nickname" + user.getKakaoAccount().getEmail());
+//                    // 유저의 어카운트 정보의 프로파일에 닉네임
+                    Log.d(TAG,"invoke:profile" + user.getKakaoAccount().getProfile());
 
+                    // 유저의 아이디
                     FirebaseAuth auth = FirebaseAuth.getInstance();
-                    String email = user.getKakaoAccount().getEmail();
+                    FirebaseUser fbUser = auth.getCurrentUser();
+                    String fbUid =   fbUser.getUid();
                     String userId = user.getId().toString();
-
-                    // Firebase 로그인 또는 회원가입
-                    auth.signInWithEmailAndPassword(email, userId)
-                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        // Firebase 로그인 성공
-                                        FirebaseUser fbUser = auth.getCurrentUser();
-                                        if (fbUser != null) {
-                                            String fbUid = fbUser.getUid();
-                                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
-                                            DatabaseReference userRef = databaseReference.child(fbUid);
-                                            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                    if (dataSnapshot.exists()) {
-                                                        // 이미 해당 아이디로 데이터가 존재하는 경우
-                                                        Toast.makeText(LoginActivity.this, "이미 로그인되어 있습니다.", Toast.LENGTH_SHORT).show();
-                                                        Intent intent = new Intent(getApplicationContext(), chatList.class);
-                                                        startActivity(intent);
-                                                    } else {
-                                                        // 새로 로그인 하는 경우
-                                                        DatabaseReference sendUserData = databaseReference.child(fbUid);
-                                                        // 데이터 쓰기
-                                                        sendUserData.child("name").setValue(user.getKakaoAccount().getProfile().getNickname());
-                                                        sendUserData.child("email").setValue(user.getKakaoAccount().getEmail());
-                                                        sendUserData.child("thumbnail").setValue(user.getKakaoAccount().getProfile().getThumbnailImageUrl());
-                                                        // Toast 알림
-                                                        Intent intent = new Intent(getApplicationContext(), chatList.class);
-                                                        startActivity(intent);
-                                                    }
+                    String email = user.getKakaoAccount().getEmail();
+                    // Firebase 데이터베이스 인스턴스 가져오기
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+                    // 해당 아이디로 데이터베이스에서 데이터 가져오기
+                    DatabaseReference userRef = databaseReference.child(fbUid);
+                    userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                // 이미 해당 아이디로 데이터가 존재하는 경우
+                                Toast.makeText(LoginActivity.this, "이미 로그인되어 있습니다.", Toast.LENGTH_SHORT).show();
+                               auth.signInWithEmailAndPassword(email,userId)
+                                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                if (task.isSuccessful()) {
+                                                } else {
                                                 }
+                                            }
+                                        });
+                                Intent intent = new Intent(getApplicationContext(), chatList.class);
+                                startActivity(intent);
 
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                                    // 오류 처리
-                                                    Log.d(TAG, "Database Error: " + databaseError.getMessage());
-                                                }
-                                            });
-                                        } else {
-                                            // 사용자가 인증되어 있지 않습니다.
-                                        }
-                                    } else {
-                                        // Firebase 로그인 실패
-                                    }
+                            } else {
+                                // 새로 로그인 하는 경우
+                                FirebaseUser fbUser = auth.getCurrentUser();
+                                if (fbUser != null) {
+                                    String fbUid =   fbUser.getUid();
+                                DatabaseReference sendUserData = databaseReference.child(fbUid);
+                                // 데이터 쓰기
+                                sendUserData.child("name").setValue(user.getKakaoAccount().getProfile().getNickname());
+                                sendUserData.child("email").setValue(user.getKakaoAccount().getEmail());
+                                sendUserData.child("thumbnail").setValue(user.getKakaoAccount().getProfile().getThumbnailImageUrl());
+                                //Toast 알림
+                                } else {
+                                    // 사용자가 인증되어 있지 않습니다.
                                 }
-                            });
+                                FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,userId)
+                                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                if (task.isSuccessful()) {
+
+                                                } else {
+                                                }
+                                            }
+                                        });
+                                //화면이동
+
+                                Intent intent = new Intent(getApplicationContext(), chatList.class);
+                                startActivity(intent);
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            // 오류 처리
+                            Log.d(TAG, "Database Error: " + databaseError.getMessage());
+                        }
+                    });
                 } else {
                     // 로그인이 되어 있지 않다면
-                    Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "로그인실패", Toast.LENGTH_SHORT).show();
                 }
                 return null;
             }
         });
     }
 
-
-}
+    }

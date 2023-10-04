@@ -36,7 +36,9 @@ public class LoginActivity extends AppCompatActivity {
     private TextView nickName;
     private ImageView profileImage;
 
-    private Button btn_1,send_img;
+    private Button btn_1,send_img,btn_2;
+
+    private String username, profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         profileImage = findViewById(R.id.profile);
         btn_1 = findViewById(R.id.btn_1);
         send_img = findViewById(R.id.send_img);
+        btn_2 = findViewById(R.id.btn_2);
 
 
 
@@ -87,7 +90,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
+        btn_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(LoginActivity.this, chatList.class);
+                intent.putExtra("username", username);
+                intent.putExtra("profile",profile);
+                startActivity(intent);
+            }
+        });
 
     // 로그인 버튼
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -131,6 +142,9 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d(TAG,"invoke: email" + user.getKakaoAccount().getProfile().getNickname());
                     Log.d(TAG,"invoke: email" + user.getKakaoAccount().getProfile());
                     nickName.setText(user.getKakaoAccount().getProfile().getNickname());
+
+                    username = user.getKakaoAccount().getProfile().getNickname();
+                    profile = user.getKakaoAccount().getProfile().getProfileImageUrl();
 
                     Glide.with(profileImage).load(user.getKakaoAccount().
                             getProfile().getProfileImageUrl()).circleCrop().into(profileImage);

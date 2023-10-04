@@ -3,7 +3,9 @@
     android:orientation="horizontal"
     android:padding="8dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/whitesmoke">
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="60dp"
@@ -14,6 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:textSize="24dp"
+        android:textSize="20dp"
         android:text="text"/>
 </LinearLayout>

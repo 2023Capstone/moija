@@ -5,13 +5,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+
+import org.w3c.dom.Text;
 
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
@@ -28,10 +35,23 @@ public class chatList extends AppCompatActivity {
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final SecureRandom secureRandom = new SecureRandom();
 
+    private TextView textView;
+     private ImageView imageView;
+
+     private String username, profile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_list);
+
+        username = getIntent().getStringExtra("username");
+        profile = getIntent().getStringExtra("profile");
+
+        imageView = findViewById(R.id.imageView);
+        textView = findViewById(R.id.textView);
+        textView.setText(username);
+        Glide.with(imageView).load(profile).circleCrop().into(imageView);
 
         //----- 테스트를 위한 더미 데이터 생성 --------------------
         testDataSet = new ArrayList<>(); // 클래스 멤버 변수로 초기화
@@ -56,6 +76,9 @@ public class chatList extends AppCompatActivity {
             @Override
             public void onItemClicked(int position, String data) {
                 Toast.makeText(getApplicationContext(), "Position:" + position + ", Data:" + data, Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(chatList.this, chat.class);
+                    intent.putExtra("roomdata", data);
+                startActivity(intent);
             }
         });
         //==========================================================
@@ -94,10 +117,15 @@ public class chatList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String inputRoomNameText = roomName.getText().toString();
-                String currentDateTime = getCurrentDateTime();
-                testDataSet.add(inputRoomNameText + "\n" + randomStringValue + "\n" + currentDateTime);
-                roomCustomAdapter.notifyItemInserted(testDataSet.size());
-                customDialog.dismiss();
+                if(inputRoomNameText.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "방 이름이 작성되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                }else {
+                    String currentDateTime = getCurrentDateTime();
+                    testDataSet.add("방 이름: " + inputRoomNameText + "\n["
+                            + randomStringValue + "] " + currentDateTime);
+                    roomCustomAdapter.notifyItemInserted(testDataSet.size());
+                    customDialog.dismiss();
+                }
             }
         });
 

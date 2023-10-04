@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Moija"
         tools:targetApi="31">
         <activity
+            android:name=".chat"
+            android:exported="false" />
+        <activity
             android:name=".chatList"
             android:exported="true" />
         <activity

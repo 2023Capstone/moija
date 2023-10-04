@@ -44,6 +44,12 @@
             android:layout_height="wrap_content"
             android:text="firebase realtime database 연동" />
 
+        <Button
+            android:id="@+id/btn_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="방 선택" />
+
     </LinearLayout>
 
 

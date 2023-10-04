@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
     <!-- 인터넷 사용 권한 설정 -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".KakoApplication"
@@ -16,10 +18,19 @@
         android:theme="@style/Theme.Moija"
         tools:targetApi="31">
         <activity
-            android:name=".chatList"
+            android:name=".MapFragment"
             android:exported="false" />
         <activity
-            android:name=".test2"
+            android:name=".Location"
+            android:exported="false" />
+        <activity
+            android:name=".Fragment_Chat_Map"
+            android:exported="false" />
+        <activity
+            android:name=".ChatFragment"
+            android:exported="false" />
+        <activity
+            android:name=".ChatList"
             android:exported="false" />
         <activity
             android:name=".IntroActivity"
@@ -30,7 +41,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"/>
+        <activity android:name=".LoginActivity" />
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">

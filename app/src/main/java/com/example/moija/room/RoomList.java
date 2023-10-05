@@ -1,4 +1,6 @@
-package com.example.moija;
+package com.example.moija.room;
+
+import static com.example.moija.time.DateTime.getCurrentDateTime;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,41 +19,38 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-
-import org.w3c.dom.Text;
+import com.example.moija.R;
+import com.example.moija.chat.Chat;
 
 import java.security.SecureRandom;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
-public class chatList extends AppCompatActivity {
+public class RoomList extends AppCompatActivity {
 
     // testDataSet와 customAdapter를 클래스 멤버 변수로 선언
     private ArrayList<String> testDataSet;
-    private roomCustomAdapter roomCustomAdapter;
+    private RoomCustomAdapter roomCustomAdapter;
     private Dialog customDialog;
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final SecureRandom secureRandom = new SecureRandom();
 
-    private TextView textView;
-     private ImageView imageView;
+    private TextView username_Text;
+    private ImageView profile_Image;
 
-     private String username, profile;
+    private String username, profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_list);
+        setContentView(R.layout.activity_room_list);
 
         username = getIntent().getStringExtra("username");
         profile = getIntent().getStringExtra("profile");
 
-        imageView = findViewById(R.id.imageView);
-        textView = findViewById(R.id.textView);
-        textView.setText(username);
-        Glide.with(imageView).load(profile).circleCrop().into(imageView);
+        profile_Image = findViewById(R.id.profile_Image);
+        username_Text = findViewById(R.id.username_Text);
+        username_Text.setText(username);
+        Glide.with(profile_Image).load(profile).circleCrop().into(profile_Image);
 
         //----- 테스트를 위한 더미 데이터 생성 --------------------
         testDataSet = new ArrayList<>(); // 클래스 멤버 변수로 초기화
@@ -60,7 +59,7 @@ public class chatList extends AppCompatActivity {
 //        }
         //--------------------------------------------------------
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView room_recyclerView = findViewById(R.id.room_recyclerView);
 
         //--- LayoutManager는 아래 3가지중 하나를 선택하여 사용 ----
         // 1) LinearLayoutManager()
@@ -68,26 +67,28 @@ public class chatList extends AppCompatActivity {
         // 3) StaggeredGridLayoutManager()
         //---------------------------------------------------------
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);  // LayoutManager 설정
+        room_recyclerView.setLayoutManager(linearLayoutManager);  // LayoutManager 설정
 
-        roomCustomAdapter = new roomCustomAdapter(testDataSet); // 클래스 멤버 변수로 초기화
+        roomCustomAdapter = new RoomCustomAdapter(testDataSet); // 클래스 멤버 변수로 초기화
         //===== [Click 이벤트 구현을 위해 추가된 코드] ==============
-        roomCustomAdapter.setOnItemClickListener(new roomCustomAdapter.OnItemClickListener() {
+        roomCustomAdapter.setOnItemClickListener(new RoomCustomAdapter.OnItemClickListener() {
             @Override
             public void onItemClicked(int position, String data) {
                 Toast.makeText(getApplicationContext(), "Position:" + position + ", Data:" + data, Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(chatList.this, chat.class);
+                Intent intent=new Intent(RoomList.this, Chat.class);
                     intent.putExtra("roomdata", data);
+                    intent.putExtra("username", username);
+                    intent.putExtra("profile",profile);
                 startActivity(intent);
             }
         });
         //==========================================================
-        recyclerView.setAdapter(roomCustomAdapter); // 어댑터 설정
+        room_recyclerView.setAdapter(roomCustomAdapter); // 어댑터 설정
 
         //----- 데이터 추가 버튼 -------------------------------
-        Button buttonAddItem = findViewById(R.id.buttonAddItem);
+        Button button_AddItem = findViewById(R.id.button_AddItem);
 
-        buttonAddItem.setOnClickListener(new View.OnClickListener() {
+        button_AddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showCustomDialog();
@@ -106,12 +107,12 @@ public class chatList extends AppCompatActivity {
         }
 
         final EditText roomName = customDialog.findViewById(R.id.roomName);
-        final EditText randomString = customDialog.findViewById(R.id.randomString);
+        final EditText roomCode = customDialog.findViewById(R.id.roomCode);
         Button saveButton = customDialog.findViewById(R.id.saveButton);
 
         int length = 6;
         String randomStringValue = generateRandomString(length);
-        randomString.setText(randomStringValue);
+        roomCode.setText(randomStringValue);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,16 +144,4 @@ public class chatList extends AppCompatActivity {
         return randomString.toString();
     }
 
-    private String getCurrentDateTime() {
-        // 현재 날짜와 시간을 가져오는 Date 객체 생성
-
-        Date currentDate = new Date();
-        // 원하는 날짜 및 시간 형식을 설정한 SimpleDateFormat 객체 생성
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        // SimpleDateFormat을 사용하여 Date 객체를 문자열로 변환
-        String formattedDate = dateFormat.format(currentDate);
-
-        return formattedDate;
-    }
 }

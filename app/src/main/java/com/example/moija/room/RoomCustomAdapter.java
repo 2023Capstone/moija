@@ -1,4 +1,4 @@
-package com.example.moija;
+package com.example.moija.room;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +8,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.moija.R;
+
 import java.util.ArrayList;
 
-public class roomCustomAdapter extends RecyclerView.Adapter<roomCustomAdapter.ViewHolder>{
+public class RoomCustomAdapter extends RecyclerView.Adapter<RoomCustomAdapter.ViewHolder>{
 
     private ArrayList<String> localDataSet;
 
@@ -32,25 +34,25 @@ public class roomCustomAdapter extends RecyclerView.Adapter<roomCustomAdapter.Vi
 
     //----- 뷰홀더 클래스 ---------------------------------------------------
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView textView;
+        private TextView roomData;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.textView);
+            roomData = itemView.findViewById(R.id.roomData);
         }
 
         public TextView getTextView() {
-            return textView;
+            return roomData;
         }
 
-        public void setTextView(TextView textView) {
-            this.textView = textView;
+        public void setTextView(TextView roomData) {
+            this.roomData = roomData;
         }
     }
     //---------------------------------------------------------------------
 
     //----- 생성자 ---------------------------------------------------------
     // 생성자를 통해서 데이터를 전달받도록 함
-    public roomCustomAdapter (ArrayList<String> dataSet) {
+    public RoomCustomAdapter(ArrayList<String> dataSet) {
         localDataSet = dataSet;
     }
     //---------------------------------------------------------------------
@@ -58,11 +60,11 @@ public class roomCustomAdapter extends RecyclerView.Adapter<roomCustomAdapter.Vi
     //----- RecyclerView Adapter 필수 구현 항목 ----------------------------
     @NonNull
     @Override   // ViewHolder 객체를 생성하여 리턴한다.
-    public roomCustomAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RoomCustomAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.room_recyclerview_item, parent, false);
 
-        roomCustomAdapter.ViewHolder viewHolder = new roomCustomAdapter.ViewHolder(view);
+        RoomCustomAdapter.ViewHolder viewHolder = new RoomCustomAdapter.ViewHolder(view);
 
         //===== [Click 이벤트 구현을 위해 추가된 코드] =====================
         view.setOnClickListener(new View.OnClickListener() {
@@ -82,9 +84,9 @@ public class roomCustomAdapter extends RecyclerView.Adapter<roomCustomAdapter.Vi
     }
 
     @Override   // ViewHolder안의 내용을 position에 해당되는 데이터로 교체한다.
-    public void onBindViewHolder(@NonNull roomCustomAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RoomCustomAdapter.ViewHolder holder, int position) {
         String text = localDataSet.get(position);
-        holder.textView.setText(text);
+        holder.roomData.setText(text);
     }
 
     @Override   // 전체 데이터의 갯수를 리턴한다.

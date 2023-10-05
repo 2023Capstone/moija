@@ -3,7 +3,6 @@ package com.example.moija;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,18 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.moija.room.RoomList;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.kakao.sdk.auth.model.OAuthToken;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.User;
-
-import org.checkerframework.checker.nullness.qual.NonNull;
-
-import java.io.File;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
@@ -93,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
         btn_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(LoginActivity.this, chatList.class);
+                Intent intent=new Intent(LoginActivity.this, RoomList.class);
                 intent.putExtra("username", username);
                 intent.putExtra("profile",profile);
                 startActivity(intent);

@@ -61,7 +61,7 @@ public class Chat extends AppCompatActivity {
             public void onClick(View view) {
                 String message = messageEditText.getText().toString();
                 if (!message.isEmpty()) {
-                    messageList.add(message);
+                    messageList.add(username + ": " + message);
                     chatAdapter.notifyDataSetChanged();
                     chatRecyclerView.scrollToPosition(chatAdapter.getItemCount() - 1);
                     messageEditText.getText().clear();

@@ -27,6 +27,8 @@ import com.kakao.vectormap.KakaoMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -130,6 +132,7 @@ public class SearchPage extends AppCompatActivity {
                 @Query("y") double latitude
         );
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,7 +141,21 @@ public class SearchPage extends AppCompatActivity {
         goalEditText=findViewById(R.id.goalEditText);
         resultListView = findViewById(R.id.resultListView);
         backbutton=findViewById(R.id.backbutton);
-        FindMyAddress();
+        //1초마다 현재위치가 설정되어있는지 확인하고, 설정되있으면 현재 주소를 토대로 시작위치를 결정하도록 한다
+        Timer timer = new Timer();
+        TimerTask Findaddress= new TimerTask() {
+            @Override
+            public void run() {
+
+                if(Mylocation.Lastlocation!=null && Startsearched==false && !startEditText.isFocused())
+                {
+                    FindMyAddress();
+                    Log.d("mylog","실행");
+                }
+            }
+
+        };
+        timer.schedule(Findaddress, 0, 1000);
 
         //뒤로가기 버튼 누르면 맵 채팅 화면으로 이동
         backbutton.setOnClickListener(new View.OnClickListener() {
@@ -333,7 +350,7 @@ public class SearchPage extends AppCompatActivity {
             return view;
         }
     }
-    //내 위치에서 가장 가까운 주소명을 받아 시작점 edittext에 띄우는 코드
+    //현재위치의 좌표를 통해 주소를 찾음
     public void FindMyAddress(){
             // Retrofit2를 사용하여 카카오맵 REST API에 검색 요청을 보냄
             Retrofit retrofit = new Retrofit.Builder()
@@ -350,11 +367,23 @@ public class SearchPage extends AppCompatActivity {
                 public void onResponse(Call<KakaoAddressResponse> call, Response<KakaoAddressResponse> response) {
                     if (response.isSuccessful()) {
                         KakaoAddressResponse addressResponse = response.body();
+                        Log.d("mylog",addressResponse.toString());
                         if (addressResponse != null && addressResponse.getDocuments().size() > 0) {
-                            String addressName = addressResponse.getDocuments().get(0).getRoadAddress().getBuilding_name();
-                            setStarttoMyaddress(addressName);
-                            startEditText.setText("현재 위치 : "+addressName);
-                            Startsearched=true;
+                            if(addressResponse.getDocuments().get(0).getRoadAddress()!=null) {
+                                if (!addressResponse.getDocuments().get(0).getRoadAddress().getBuilding_name().isEmpty()) {
+                                    //startEditText.setText("현재위치 : " + addressResponse.getDocuments().get(0).getRoadAddress().getBuilding_name().toString());
+                                    //주소를 찾고 출발지 설정을 위해 넘겨준다
+                                    setStarttoMyaddress(addressResponse.getDocuments().get(0).getRoadAddress().getBuilding_name().toString());
+                                    Startsearched = true;
+                                } else if (addressResponse.getDocuments().get(0).getRoadAddress().getBuilding_name().isEmpty()) {
+                                    //startEditText.setText("현재위치 : " + addressResponse.getDocuments().get(0).getRoadAddress().getAddress_name().toString());
+                                    //주소를 찾고 출발지 설정을 위해 넘겨준다
+                                    setStarttoMyaddress(addressResponse.getDocuments().get(0).getRoadAddress().getAddress_name().toString());
+                                    Startsearched = true;
+                                }
+
+
+                            }
                         } else {
                             Log.d("KakaoAddressSearch", "주소를 찾을 수 없습니다.");
                         }
@@ -387,7 +416,10 @@ public class SearchPage extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     //searchResponse에 api 응답을 받고
                     SearchResponse searchResponse = response.body();
+                    //받은 응답의 장소들을 Place형태로 받아온 뒤에,
                     List<MapFragment.Place> searchedplace = searchResponse.getDocuments();
+                    //가장 가까운(앞에 있는) 장소를 현재 위치로 결정한다.
+                    startEditText.setText("현재 위치 : "+searchResponse.getDocuments().get(0).getPlaceName().toString());
                     Mylocation.StartPlace=searchedplace.get(0);
                 }
             }

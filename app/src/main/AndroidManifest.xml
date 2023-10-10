@@ -16,8 +16,11 @@
         android:theme="@style/Theme.Moija"
         tools:targetApi="31">
         <activity
-            android:name=".chatList"
-            android:exported="false" />
+            android:name=".chat.Chat"
+            android:exported="true" />
+        <activity
+            android:name=".room.RoomList"
+            android:exported="true" />
         <activity
             android:name=".test2"
             android:exported="false" />

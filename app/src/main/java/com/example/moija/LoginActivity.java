@@ -33,6 +33,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private String username, profile;
 
+    private Long userid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +89,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(LoginActivity.this, RoomList.class);
+                intent.putExtra("userid", userid);
                 intent.putExtra("username", username);
                 intent.putExtra("profile",profile);
                 startActivity(intent);
@@ -136,6 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d(TAG,"invoke: email" + user.getKakaoAccount().getProfile());
                     nickName.setText(user.getKakaoAccount().getProfile().getNickname());
 
+                    userid = user.getId();
                     username = user.getKakaoAccount().getProfile().getNickname();
                     profile = user.getKakaoAccount().getProfile().getProfileImageUrl();
 

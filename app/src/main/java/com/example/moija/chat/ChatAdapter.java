@@ -31,10 +31,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String message = messageList.get(position);
         holder.messageTextView.setText(message);
-        holder.textViewTime.setText(""+getCurrentDateTime());
+        holder.textViewTime.setText("" + );
 
         // 긴 아이템의 경우 오른쪽으로 정렬
-//        holder.itemView.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        if (message.length() > 20) {
+            holder.itemView.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        } else {
+            holder.itemView.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
     }
 
     @Override

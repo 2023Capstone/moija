@@ -28,7 +28,7 @@ public class Fragment_Chat_Map extends AppCompatActivity {
         // ChatList와 MapFragment 인스턴스 초기화
         chatList = new ChatList();
         mapFragment = new MapFragment();
-        fragmentManager.beginTransaction().replace(R.id.fragmentContainer,chatList).commit();
+
         btn_map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

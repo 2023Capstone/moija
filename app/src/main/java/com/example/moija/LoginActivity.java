@@ -3,6 +3,7 @@ package com.example.moija;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,25 +37,12 @@ public class LoginActivity extends AppCompatActivity {
     private ImageView profileImage;
 
     private DatabaseReference databaseReference;
-    private Button btn_1,send_img,btn_2;
-
-    private String username, profile;
-
-    private Long userid;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         loginButton = findViewById(R.id.login);
-        logoutButton = findViewById(R.id.logout);
-        nickName = findViewById(R.id.nickname);
-        profileImage = findViewById(R.id.profile);
-        btn_1 = findViewById(R.id.btn_1);
-        send_img = findViewById(R.id.send_img);
-        btn_2 = findViewById(R.id.btn_2);
-
 
 
         // 카카오가 설치되어 있는지 확인 하는 메서드또한 카카오에서 제공 콜백 객체를 이용함
@@ -126,18 +114,6 @@ public class LoginActivity extends AppCompatActivity {
                                 sendUserData.child("name").setValue(user.getKakaoAccount().getProfile().getNickname());
                                 sendUserData.child("email").setValue(user.getKakaoAccount().getEmail());
                                 sendUserData.child("thumbnail").setValue(user.getKakaoAccount().getProfile().getThumbnailImageUrl());
-                    // 유저의 아이디D
-                    Log.d(TAG,"invoke: id" +user.getId());
-                    // 유저의 어카운트정보에 이메일
-                    Log.d(TAG,"invoke: nickname" + user.getKakaoAccount().getEmail());
-                    // 유저의 어카운트 정보의 프로파일에 닉네임
-                    Log.d(TAG,"invoke: email" + user.getKakaoAccount().getProfile().getNickname());
-                    Log.d(TAG,"invoke: email" + user.getKakaoAccount().getProfile());
-                    nickName.setText(user.getKakaoAccount().getProfile().getNickname());
-
-                    userid = user.getId();
-                    username = user.getKakaoAccount().getProfile().getNickname();
-                    profile = user.getKakaoAccount().getProfile().getProfileImageUrl();
 
                                 //Toast 알림
                                 Toast.makeText(LoginActivity.this, "로그인됨", Toast.LENGTH_SHORT).show();

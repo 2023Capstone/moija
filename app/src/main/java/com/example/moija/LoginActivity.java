@@ -13,16 +13,25 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import com.bumptech.glide.Glide;
+import com.example.moija.room.RoomList;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.kakao.sdk.auth.model.OAuthToken;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.User;
 import org.checkerframework.checker.nullness.qual.NonNull;
+
+
 import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private View loginButton;
     private DatabaseReference databaseReference;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,15 +74,18 @@ public class LoginActivity extends AppCompatActivity {
             public Unit invoke(User user, Throwable throwable) {
                 if (user != null) {
                     //                    // 유저의 아이디D
-                    Log.d(TAG,"invoke: id" +user.getId());
+                    Log.d(TAG,"invoke: id " +user.getId());
 //                    // 유저의 어카운트정보에 이메일
-                    Log.d(TAG,"invoke: nickname" + user.getKakaoAccount().getEmail());
+                    Log.d(TAG,"invoke: email " + user.getKakaoAccount().getEmail());
+                    Log.d(TAG, "invoke:name "+user.getKakaoAccount().getName());
 //                    // 유저의 어카운트 정보의 프로파일에 닉네임
-                    Log.d(TAG,"invoke:profile" + user.getKakaoAccount().getProfile());
+                    Log.d(TAG,"invoke:profile " + user.getKakaoAccount().getProfile().getNickname());
 
                     FirebaseAuth auth = FirebaseAuth.getInstance();
                     String userId = user.getId().toString();
                     String email = user.getKakaoAccount().getEmail();
+                    String userName =user.getKakaoAccount().getProfile().getNickname();
+                    String profile= user.getKakaoAccount().getProfile().getThumbnailImageUrl();
 
                 //로그인 시도
                     auth.signInWithEmailAndPassword(email,userId)
@@ -81,7 +93,10 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        Intent intent = new Intent(getApplicationContext(), Fragment_Chat_Map.class);
+                                        Intent intent=new Intent(LoginActivity.this, RoomList.class);
+                                        intent.putExtra("userid", userId);
+                                        intent.putExtra("username", userName);
+                                        intent.putExtra("profile",profile);
                                         startActivity(intent);
                                     } else {
                                         //로그인 정보 없으면 회원가입
@@ -98,9 +113,9 @@ public class LoginActivity extends AppCompatActivity {
 //                                                     새로 로그인 하는 경우
                                                     DatabaseReference sendUserData = databaseReference.child(fbUser.getUid());
                                 // 데이터 쓰기
-                                                    sendUserData.child("name").setValue(user.getKakaoAccount().getProfile().getNickname());
-                                                    sendUserData.child("email").setValue(user.getKakaoAccount().getEmail());
-                                                    sendUserData.child("thumbnail").setValue(user.getKakaoAccount().getProfile().getThumbnailImageUrl());
+                                                    sendUserData.child("name").setValue(userName);
+                                                    sendUserData.child("email").setValue(email);
+                                                    sendUserData.child("thumbnail").setValue(profile);
                                                     // Toast 알림
                                                 } else {
                                                 }

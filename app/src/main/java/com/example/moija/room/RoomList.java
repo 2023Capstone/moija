@@ -22,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.moija.Fragment_Chat_Map;
+import com.example.moija.MapFragment;
 import com.example.moija.R;
 import com.example.moija.chat.Chat;
 import com.example.moija.sqlite.RoomListDB;
@@ -93,7 +95,7 @@ public class RoomList extends AppCompatActivity {
             @Override
             public void onItemClicked(int position, String data) {
                 Toast.makeText(getApplicationContext(), "Position:" + position + ", Data:" + data, Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(RoomList.this, Chat.class);
+                Intent intent=new Intent(RoomList.this, Fragment_Chat_Map.class);
                     roomCode = getRoomCodeFromDataSet(data);
                     intent.putExtra("roomdata", data);
                     intent.putExtra("userid", userid);

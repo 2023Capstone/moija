@@ -2,6 +2,8 @@ package com.example.moija;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +27,11 @@ public class Fragment_Chat_Map extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
 
+        String userId = getIntent().getStringExtra("userid");
+        String username = getIntent().getStringExtra("username");
+        String profile = getIntent().getStringExtra("profile");
+        String roomCode = getIntent().getStringExtra("roomcode");
+
         btn_chat = findViewById(R.id.btn_chat);
         btn_map = findViewById(R.id.btn_map);
 
@@ -32,6 +39,8 @@ public class Fragment_Chat_Map extends AppCompatActivity {
         chat = new Chat();
         mapFragment = new MapFragment();
         fragmentManager.beginTransaction().replace(R.id.fragmentContainer,chat).commit();
+         // 데이터를 Intent로부터 가져옴
+        String roomData = getIntent().getStringExtra("roomdata");
         btn_map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -32,6 +32,7 @@
         <activity
             android:name=".chat.Chat"
             android:exported="true" />
+
         <activity
             android:name=".room.RoomList"
             android:exported="true" />

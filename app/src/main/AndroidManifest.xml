@@ -29,14 +29,13 @@
         <activity
             android:name=".ChatFragment"
             android:exported="false" />
+        <activity
             android:name=".chat.Chat"
             android:exported="true" />
         <activity
             android:name=".room.RoomList"
             android:exported="true" />
-        <activity
-            android:name=".ChatList"
-            android:exported="false" />
+
         <activity
             android:name=".IntroActivity"
             android:exported="true">

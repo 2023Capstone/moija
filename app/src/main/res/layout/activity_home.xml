@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Fragment_Chat_Map">
+    tools:context=".HomeFragment">
 
     <!-- Fragment 화면을 감싸는 LinearLayout -->
     <LinearLayout
@@ -21,55 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <LinearLayout
-        android:visibility="invisible"
-        android:id="@+id/setGoalLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
 
-        android:orientation="vertical"
-        android:layout_marginBottom="45dp"
-        android:gravity="bottom">
-        <TextView
-            android:id="@+id/Routeinfo"
-            android:layout_width="match_parent"
-            android:textColor="@color/black"
-            android:background="#F2F2F2"
-            android:paddingTop="15dp"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:text="시작지-목적지"/>
-        <TextView
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="목적지로 설정할까요?"
-            android:background="#F2F2F2"
-            android:gravity="center"
-            android:padding="16dp"
-            android:textColor="@color/black"
-            android:textSize="18sp"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#F2F2F2"
-            android:paddingBottom="20dp"
-            android:orientation="horizontal">
-            <Button
-                android:id="@+id/yesbtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="70dp"
-                android:text="예"/>
-
-            <Button
-                android:id="@+id/nobtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="80dp"
-                android:text="아니오" />
-        </LinearLayout>
-    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -85,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/white"
-            android:text="채팅"
+            android:text="즐겨찾기"
             android:textColor="#000000" /> <!-- 검정색 글자색 -->
         <!-- 맵 버튼 -->
         <!-- 버튼을 맨밑에 위치 시킨다

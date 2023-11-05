@@ -4,8 +4,11 @@ import static android.content.Intent.getIntent;
 
 import static androidx.core.content.ContentProviderCompat.requireContext;
 
+import static org.apache.commons.lang3.ClassUtils.getPackageName;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -18,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,11 +68,9 @@ import retrofit2.http.Query;
 public class MapFragment extends Fragment {
 
     LinearLayout setGoalLayout;
-    TextView routeinfo;
-    public MapFragment(LinearLayout linearLayout, TextView textView) {
-        this.setGoalLayout = linearLayout;
-        this.routeinfo=textView;
-    }
+
+    ImageButton busbtn,outbusbtn,trainbtn;
+
     //kakaoMap을 OnMapReady가 아닌 다른곳에서도 호출할 수 있게 선언
     KakaoMap thiskakaoMap;
     public static Context context;
@@ -90,6 +92,8 @@ public class MapFragment extends Fragment {
     //카카오맵 클래스 선언(사용하고 있는 카카오맵을 담기 위함)
     //API 키
     protected static final String API_KEY = "8661fab6b43b9d4005d9eb9a06b10449";
+
+    protected static final String OdsayAPI_KEY="Bk3FXTpa4bUs3dxTOsUxSFvLGFYhTaoBDPKfSPOLdwI";
     //api 기본 URL
     protected static final String BASE_URL = "https://dapi.kakao.com/";
     //REST api의 장소 정보를 담기 위한 객체
@@ -129,14 +133,24 @@ public class MapFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         ViewGroup rootview = (ViewGroup)inflater.inflate(R.layout.activity_map_fragment,container,false);
-
         context=requireContext();
         MapView mapView = rootview.findViewById(R.id.map_view);
+        setGoalLayout=rootview.findViewById(R.id.setGoalLayout);
         FloatingActionButton menubtn=rootview.findViewById(R.id.menubtn);
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         DrawerLayout drawerLayout = activity.findViewById(R.id.drawer_layout);
         NavigationView navigationView = activity.findViewById(R.id.nav_view);
-
+        FloatingActionButton searchbtn=rootview.findViewById(R.id.searchbtn);
+        busbtn=rootview.findViewById(R.id.busbtn);
+        outbusbtn=rootview.findViewById(R.id.outbusbtn);
+        trainbtn=rootview.findViewById(R.id.trainbtn);
+        searchbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent Movetosearch = new Intent(getActivity(), SearchPage.class);
+                startActivity(Movetosearch);
+            }
+        });
         // 메뉴바의 아이템들을 눌렀을때
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -144,19 +158,32 @@ public class MapFragment extends Fragment {
                 // 아이템을 선택했을 때 실행할 동작 구현
                 int itemId = item.getItemId();
                 if (itemId == R.id.menuitem1) {
-                    Intent Movetosearch = new Intent(getActivity(), SearchPage.class);
-                    startActivity(Movetosearch);
-                } else if (itemId == R.id.menuitem2) {
                     Toast.makeText(getActivity().getApplicationContext(), "버스노선 확인", Toast.LENGTH_SHORT).show();
-                } else if (itemId == R.id.menuitem3) {
+                } else if (itemId == R.id.menuitem2) {
                     Toast.makeText(getActivity().getApplicationContext(), "다른 메뉴", Toast.LENGTH_SHORT).show();
                 }
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             }
         });
-
-
+        busbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setGoalLayout.setVisibility(View.INVISIBLE);
+            }
+        });
+        outbusbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setGoalLayout.setVisibility(View.INVISIBLE);
+            }
+        });
+        trainbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setGoalLayout.setVisibility(View.INVISIBLE);
+            }
+        });
 
 
         menubtn.setOnClickListener(new View.OnClickListener() {
@@ -215,7 +242,6 @@ public class MapFragment extends Fragment {
                         if(!searchingwithMine)
                         {
                             Mylocation.Lastlocation=location;
-
                             if(Mylocation.Lastlocation!=null) {
                                 //마커 스타일 설정
                                 LabelStyles styles = kakaoMap.getLabelManager()
@@ -329,7 +355,7 @@ public class MapFragment extends Fragment {
                     }
                     //카메라를 시작 지점, 끝지점 사이 중간 쪽으로 이동
                     setGoalLayout.setVisibility(View.VISIBLE);
-                    routeinfo.setText(Mylocation.StartPlace.getPlaceName()+"-"+Mylocation.selectedPlace.getPlaceName());
+
                     CameraUpdate cameraUpdatetoGoal = CameraUpdateFactory.newCenterPosition(LatLng.from((Mylocation.StartPlace.getY()+Mylocation.selectedPlace.getY())/2,(Mylocation.StartPlace.getX()+Mylocation.selectedPlace.getX())/2),zoomLevel);
                     thiskakaoMap.moveCamera(cameraUpdatetoGoal, CameraAnimation.from(500, true, true));
 

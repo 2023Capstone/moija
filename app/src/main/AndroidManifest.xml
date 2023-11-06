@@ -30,10 +30,7 @@
             android:theme="@style/Theme.Map"
             android:name=".MapFragment"
             android:exported="false" />
-        <activity
-            android:theme="@style/Theme.Map"
-            android:name=".ChatFragment"
-            android:exported="false" />
+
         <activity
             android:theme="@style/Theme.Map"
             android:name=".HomeFragment"

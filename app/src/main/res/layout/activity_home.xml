@@ -14,13 +14,23 @@
         android:layout_height="0dp"
         android:layout_weight="1">
         <!-- FrameLayout 화면 -->
-    </LinearLayout>
+
 
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+<!--<<<<<<< Updated upstream:app/src/main/res/layout/activity_home.xml-->
+<!--=======-->
+    </LinearLayout>
+
+<!--    <LinearLayout-->
+<!--        android:visibility="invisible"-->
+<!--        android:id="@+id/setGoalLayout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--&gt;>>>>>> Stashed changes:app/src/main/res/layout/activity_fragment_chat_map.xml-->
 
     <LinearLayout
         android:layout_width="match_parent"

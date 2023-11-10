@@ -39,17 +39,18 @@ import retrofit2.http.Query;
 //검색 페이지에 관한 내용
 public class SearchPage extends AppCompatActivity {
 
-    //검색창
+    //출발 위치와 도착위치를 선언
     private EditText startEditText;
+    private EditText goalEditText;
+
     //시작점을 검색하는건지 도착지점을 검색하는지 나누는 변수 (0: 시작점 1: 도착점)
     private int Searchcode=0;
-    //시작점을 정했는지
+    //출발 위치를 정하지 않았으면 false, 도착 위치를 정하지 않았으면 false
     private boolean Startsearched=false;
-    //도착지점을 정했는지
     private boolean Goalsearched=false;
+    //MapFragment안에 있는 Place클래스의 Startplace, Goalplace
     private MapFragment.Place Startplace;
     private MapFragment.Place Goalplace;
-    private EditText goalEditText;
     //검색결과를 담을 리스트뷰
     private ListView resultListView;
 

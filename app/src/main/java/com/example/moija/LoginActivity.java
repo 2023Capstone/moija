@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     private ImageView profileImage;
 
     //Fragment_btn은 나중에 삭제
-    private Button btn_1,send_img,Fragment_btn;
+    private Button btn_1,send_img,Fragment_btn,Temp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         send_img = findViewById(R.id.send_img);
         //나중에 삭제
         Fragment_btn = findViewById(R.id.Fragment_btn);
+        Temp = findViewById(R.id.Temp);
 
 
         //<!-- 이 버튼은 나중에 다 완성 되면 지워야함 로그인 >> 채팅 선택 >> 채팅 / 맵 (여기 코드)  -->
@@ -92,6 +93,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(getApplicationContext(), test2.class);
+                startActivity(intent);
+            }
+        });
+
+        Temp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), TempHttpActivity.class);
                 startActivity(intent);
             }
         });

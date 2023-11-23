@@ -2,6 +2,7 @@ package com.example.moija;
 
 import static com.example.moija.MapFragment.API_KEY;
 import static com.example.moija.MapFragment.BASE_URL;
+import static com.example.moija.ODsayApiKey.ODsayAPI_KEY;
 
 import android.content.Context;
 import android.content.Intent;
@@ -53,9 +54,12 @@ public class SearchPage extends AppCompatActivity {
     //검색결과를 담을 리스트뷰
     private ListView resultListView;
 
+    //뒤로가기 버튼
     private ImageButton backbutton;
+
     //REST API 에서 검색한 장소들을 Place 형태로 SearchResponse가 받음
     public class SearchResponse {
+        //
         private List<MapFragment.Place> documents;
 
         public List<MapFragment.Place> getDocuments() {return documents;}
@@ -71,6 +75,7 @@ public class SearchPage extends AppCompatActivity {
 
         );
     }
+
     //카카오 restapi에서 주소명을 담는 클래스
     public class KakaoAddressResponse {
 
@@ -130,6 +135,7 @@ public class SearchPage extends AppCompatActivity {
                 @Query("y") double latitude
         );
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -223,53 +229,30 @@ public class SearchPage extends AppCompatActivity {
                 return true;
             }
         });
-        //검색결과중 하나를 누르면 
-        resultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+
+        //검색결과중 하나를 누르면
+        resultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             //검색결과 중 하나 클릭하면
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MapFragment.Place selected = (MapFragment.Place) resultListView.getItemAtPosition(position);
                 //만약 시작점을 찾는중이면
-                if(Searchcode==0)
-                {
-
-                    MapFragment.Place selected=(MapFragment.Place) resultListView.getItemAtPosition(position);
+                if(Searchcode==0) {
                     //출발위치를 선택한 위치로 결정
                     startEditText.setText("출발 위치: " + selected.getPlaceName());
                     Startplace=selected;
-
-
                     Startsearched=true;
                     Mylocation.StartPlace=selected;
-
                     //아직 도착점 안정했으면
-                    if(Goalsearched==false)
-                    {
+                    if(Goalsearched==false) {
                         //도착점 검색창에 focus를 넘겨줌
                         goalEditText.requestFocus();
                         goalEditText.setText("");
                     }
-                    //도착점 정해져있으면
-                    else if(Goalsearched==true)
-                    {
-                        //인텐트를 이용해 메인액티비티로 넘어가는데
-                        Intent myIntent=new Intent(SearchPage.this, HomeFragment.class);
-                        //FindGoal이라는 String Key를 넘겨줌
-                        //메인액티비티에서 이 Key를 확인하고 길찾기 메서드를 실행시킴
-                        myIntent.putExtra("key","FindGoal");
-                        //선택했던 장소에 대한 정보를 메인으로 넘김
-
-                        //액티비티 이동
-                        startActivity(myIntent);
-                    }
-                    resultListView.setVisibility(View.INVISIBLE);
-
-                    Startsearched=true;
                 }
                 //도착점을 찾는중이었으면
-                else if(Searchcode==1)
-                {
-                    MapFragment.Place selected=(MapFragment.Place) resultListView.getItemAtPosition(position);
+                else if(Searchcode==1) {
                     //도착위치를 선택한 위치로 결정
                     goalEditText.setText("도착 위치: " + selected.getPlaceName());
                     Goalplace=selected;
@@ -277,36 +260,24 @@ public class SearchPage extends AppCompatActivity {
                     Mylocation.selectedPlace=selected;
                     resultListView.setVisibility(View.INVISIBLE);
                     //시작점 안정했으면
-                    if(Startsearched==false)
-                    {
+                    if(Startsearched==false) {
                         //시작점 검색창으로 focus 이동
                         startEditText.requestFocus();
                         startEditText.setText("");
                     }
-                    //시작점 정해져있으면
-                    else if(Startsearched==true)
-                    {
-                        //인텐트를 이용해 메인액티비티로 넘어가는데
-                        Intent myIntent=new Intent(SearchPage.this, HomeFragment.class);
-                        //FindGoal이라는 String Key를 넘겨줌
-                        //메인액티비티에서 이 Key를 확인하고 길찾기 메서드를 실행시킴
-                        myIntent.putExtra("key","FindGoal");
-                        //선택했던 장소에 대한 정보를 메인으로 넘김
-
-                        //액티비티 이동
-                        startActivity(myIntent);
-                    }
-
-                    Goalsearched=true;
                 }
 
+                if(Goalsearched && Startsearched){
 
+
+                }
+
+                // 검색결과 리스트뷰 숨김
+                resultListView.setVisibility(View.VISIBLE);
             }
-
         });
-
-
     }
+
     //ListView의 CustomAdapter
     public class CustomAdapter extends ArrayAdapter<MapFragment.Place> {
         private LayoutInflater inflater;

@@ -31,9 +31,9 @@ public class NewActivity extends AppCompatActivity {
             sb.append("No bus data\n");
         } else {
             for (int i = 0; i < busNos.size(); i++) {
-                sb.append("Bus Nos: ").append(busNos.get(i)).append("\n");
-                sb.append("Start: ").append(i < startNames.size() ? startNames.get(i) : "Unknown").append("\n");
-                sb.append("End: ").append(i < endNames.size() ? endNames.get(i) : "Unknown").append("\n");
+                sb.append("버스번호: ").append(busNos.get(i)).append("\n");
+                sb.append("출발지: ").append(i < startNames.size() ? startNames.get(i) : "Unknown").append("\n");
+                sb.append("도착지: ").append(i < endNames.size() ? endNames.get(i) : "Unknown").append("\n");
             }
         }
 

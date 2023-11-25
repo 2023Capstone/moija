@@ -131,7 +131,18 @@ public class TempHttpActivity extends AppCompatActivity {
                 .client(client)
                 .build();
         ODsayService odsayApi=retrofit.create(ODsayService.class);
-        Call<PublicTransitResponse> call=odsayApi.searchPublicTransitPath(API_KEY,128.12538305797565,35.1870971949491,128.1005714223781,35.16430600625013);
+        // 처음 출발지 목적지에 대한
+
+        // 클래스를 apiData 만들어서 setData, getData
+        // 처음에 출발지 도착지에 대한 위도 경도를 apiData에 저장
+        // api를 호출해서 pathType이 12 or 2인 경우
+        // pathType이 2인 경우 시내 인경우 PublicTransitResponse 에서 busNo, FirstName, endName, startName, endName, startX, startY, endX, endY를 가져와서
+        // pathInfo 클래스에 저장해서 출력한다
+
+        // pathType이 12인 경우 시외 인경우 PublicTransitResponse 에서 FirstName, endName, startX, startY, endX, endY를 apiData에 저장한다
+        // 그리고 첫번째 api 호출 출발질 위도 경도 , startX, startY | FirstName, endName | 두번쨰 api 호출 endX, endY와 도착지 위도 경도
+        Call<PublicTransitResponse> call =
+                odsayApi.searchPublicTransitPath(API_KEY,128.12538305797565,35.1870971949491,128.1005714223781,35.16430600625013);
         call.enqueue(new Callback<PublicTransitResponse>() {
             @Override
             public void onResponse(Call<PublicTransitResponse> call, Response<PublicTransitResponse> response) {
